@@ -1,6 +1,5 @@
 import sounddevice as sd
 import numpy as np
-from pathlib import Path
 from openvino.runtime import Core, Tensor
 import librosa
 import scipy
@@ -24,8 +23,6 @@ def process_results(frame, results, thresh = 0.6):
 		labels.append(int(label))
 		scores.append(float(score))
 
-	# Apply non-maximum suppression to get rid of many overlapping entities.
-	# See https://paperswithcode.com/method/non-maximum-suppression
 	# This algorithm returns indices of objects to keep.
 	indices = cv2.dnn.NMSBoxes(
 		bboxes = boxes, scores = scores, score_threshold = thresh, nms_threshold = 0.6
@@ -39,7 +36,7 @@ def process_results(frame, results, thresh = 0.6):
 	return [(labels[idx], scores[idx], boxes[idx]) for idx in indices.flatten()]
 
 
-def draw_boxes(frame, boxes, target_label, changed_label):
+def draw_boxes(frame, boxes):
 	for label, score, box in boxes:
 		color = (255, 255, 255)
 		if label >= 0 and label < len(classes):
@@ -48,18 +45,11 @@ def draw_boxes(frame, boxes, target_label, changed_label):
 		x2 = box[0] + box[2]
 		y2 = box[1] + box[3]
 		cv2.rectangle(img = frame, pt1 = box[:2], pt2 = (x2, y2), color = color, thickness = 3)
-		# Ensure the label is within the bounds of the classes list
-		if label >= 0 and label < len(classes):
-			# Choose color for the label.
-			label_text = classes[label] if target_label is None or classes[label] != target_label else changed_label
-		else:
-			print(f"Label {label} is out of range")
 		# Draw a label name inside the box.
-		# if not target_classes:
 		cv2.putText(
 			img = frame,
-			# text = f"{classes[label]} {score:.2f}",
-			text = f"{label_text} {score:.2f}",
+			text = f"{classes[label]} {score:.2f}",
+			#text = f"{label_text} {score:.2f}",
 			org = (box[0] + 10, box[1] + 30),
 			fontFace = cv2.FONT_HERSHEY_COMPLEX,
 			fontScale = frame.shape[1] / 1000,
@@ -215,9 +205,7 @@ while True:
 	# Draw boxes on a frame.
 	frame = draw_boxes(
 		frame = frame,
-		boxes = boxes, 
-		target_label=target_label, 
-		changed_label=changed_label
+		boxes = boxes
 	)
 
 	processing_times.append(stop_time - start_time)
@@ -296,7 +284,10 @@ while True:
 				target_label = None
 				changed_label = None
 				continue
-
+	if target_label:
+		for i in range(len(classes)):
+			if classes[i] == target_label:
+				classes[i] = changed_label
 	# if the `q` key was pressed, break from the loop
 	if key == ord('q'):
 		break
