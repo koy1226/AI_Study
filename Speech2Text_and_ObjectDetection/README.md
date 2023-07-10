@@ -45,3 +45,4 @@ python speech_and_detection.py -i 0
 
 
 ## Appendix
+해당 repository 폴더 전체를 다운받으면, speech_and_detection.py 파일만으로 바로 실행이 가능하다.
