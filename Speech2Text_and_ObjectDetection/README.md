@@ -45,4 +45,7 @@ python speech_and_detection.py -i 0
 ![./images/result.jpg](./images/result.jpg)
 
 ## Appendix
-해당 repository 폴더 전체를 다운받으면, speech_and_detection.py 파일만으로 바로 실행이 가능하다.
+- 해당 repository 폴더 전체를 다운받으면, speech_and_detection.py 파일만으로 바로 실행이 가능하다.
+- Object_detection_raw.py : Object detection만을 위한 Code
+- Speech2Text_raw.py : Speech to Text만을 위한 Code
+- To use one model, Additional library installations and directory paths should be noted.
