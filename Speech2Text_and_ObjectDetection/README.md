@@ -1,6 +1,6 @@
 # Merge AI Models
 AI 모델 병합 프로젝트를 위해 Speech to Text와 Object Detection 모델을 사용하였고,
-마이크를 이용하여 Speech로 Detect된 Object의 Label을 변경하는 모델을 만들어 보았다.
+마이크를 이용하여 Speech로 Detect된 Object의 Label을 변경하는 모델을 만들어 보았습니다.
 
 
 ## Configuration
