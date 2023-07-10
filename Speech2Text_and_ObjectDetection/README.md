@@ -25,6 +25,8 @@ git clone --recurse-submodules https://github.com/openvinotoolkit/open_model_zoo
 cd open_model_zoo
 python -m pip install -U pip
 pip install -r .\demos\requirements.txt
+pip install -q "librosa>=0.8.1"
+pip install sounddevice
 ~~~
 
 ## Steps to build
